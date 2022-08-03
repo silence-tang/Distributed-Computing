@@ -127,13 +127,13 @@ Andy, Joseph `<br>`
 
 &emsp;&emsp;(3) 启动实验环境：首先开启 Docker Desktop 。将当前目录切换到 xxxx/hadoopspark ，然后运行命令`docker-compose up -d`和`docker ps`，可以看到基于 ubuntu-jdk8-hadoop-spark:v2 镜像的 Docker 容器（虚拟机）在运行：
 
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220609140358489.png" alt="image-20220609140358489" style="zoom:80%;" />
+[![vZmyWj.png](https://s1.ax1x.com/2022/08/03/vZmyWj.png)](https://imgtu.com/i/vZmyWj)
 
 &emsp;&emsp;(4) 用`ssh -p 2222 root@localhost`命令通过 ssh 协议从本机（宿主机）远程登陆到 `hadoopspark_singlenode` 虚拟机
 
 内部，密码为123456。
 
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220609140528301.png" alt="image-20220609140528301" style="zoom:80%;" />
+[![vZmvTO.png](https://s1.ax1x.com/2022/08/03/vZmvTO.png)](https://imgtu.com/i/vZmvTO)
 
 &emsp;&emsp;(5) 用 `start-dfs.sh` 命令启动 HDFS 分布式文件系统。
 
@@ -157,41 +157,15 @@ Andy, Joseph `<br>`
 
 &emsp;&emsp;(2) 在平台执行功能2的 MapReduce 程序：`hadoop jar ./target/AvgGradeClass.jar com.org.xidian.MapReduceAvgGradeClass /user/grades.txt /output2`。
 
-#### 实验结果：
-
-&emsp;&emsp;(1) 输入命令`hadoop fs -cat /output1/part-r-00000`查看实验1功能1的程序执行结果：
-
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220611155950950.png" alt="image-20220611155950950" style="zoom:80%;" />
-
-&emsp;&emsp;(2) 输入命令`hadoop fs -cat /output2/part-r-00000`查看实验1功能2的程序执行结果：
-
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220611161050548.png" alt="image-20220611161050548" style="zoom:80%;" />
-
 #### 实验二：
 
 &emsp;&emsp;(1) 在本地使用`mvn clean` + `mvn package`命令将程序打成jar包。
 
 &emsp;&emsp;(2) 在平台执行MapReduce程序：`hadoop jar ./target/AvgGradeClass.jar com.org.xidian.MapReduceAvgGradeClass /user/grades.txt /output2`。
 
-#### 实验结果：
-
-&emsp;&emsp;输入命令`hadoop fs -cat /output3/part-r-00000`查看实验2的程序执行结果，**结果的第一列是孙辈姓名，第二列是与之对应的祖辈姓名：**
-
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220611173128584.png" alt="image-20220611173128584" style="zoom:80%;" />
-
 #### 实验三：
 
 &emsp;&emsp;(1) 将本地目录切换到/share下，执行`spark-submit sparkexp.py`即可执行程序。
-
-#### 实验结果：
-
-&emsp;&emsp;输入命令`hadoop fs -cat /user/root/avg_grades/part-00000`查看实验3的程序执行结果，**这里我将所有学生的必修课平均成绩保留到了整数位，且进行了升序排列。**
-
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220610182919044.png" alt="image-20220610182919044" style="zoom:80%;" />
-
-&emsp;&emsp;(2) 输入命令`hadoop fs -cat /user/root/interval_stu_nums/part-00000`可查看各分段的学生人数统计结果，**这里我输出的结果是按key升序排列的结果。**
-
-<img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220610183017650.png" alt="image-20220610183017650" style="zoom:80%;" />
 
 ## 四、遇到的问题及解决方法
 
@@ -201,7 +175,7 @@ Andy, Joseph `<br>`
 
 3. 在分布式文件系统 HDFS 中创建子目录时，使用老师文档中给的`hadoop fs –mkdir test`提示`hdfs://localhost:9000/user/root': No such file or directory`。后来多次尝试后发现在要创建的子目录名前加"/"即可成功创建：
 
-   ![image-20220611151838639](C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20220611151838639.png)
+   [![vZmzkD.png](https://s1.ax1x.com/2022/08/03/vZmzkD.png)](https://imgtu.com/i/vZmzkD)
 
 4. 在写MapReduce程序时，我先是对着老师写的例程观摩了一番，然后准备在此基础上进行修改，以使之符合实验要求。一开始我想将context.write的value的类型改成Text（字符串），但是发现有多处报错，后来查阅资料得知需要相应地修改Mapper<KEYIN, VALUEIN, KEYOUT, VALUEOUT>类的out的数据类型和job.setMapOutputValueClass();的参数，使其均与Text类型一致才行。
 
@@ -209,7 +183,7 @@ Andy, Joseph `<br>`
 
 6. 在编写pyspark程序时，由于一开始还不太能掌握编写技巧，因此我先对着网上的例程学习了基本的filter、map、mapValues、reduceByKey等方法的使用要点，并且逐步将这些方法运用在测试数据上，然后观察hadoop平台的运行结果，再根据结果不断调整代码，最终完成了程序编写。
 
-6. 在提交程序至hadoop平台运行之前，若输入的命令中把要处理的文档写错了（比如child-parent.txt写成grades.txt）则会导致输出的文档大小为0B，因此在输入命令时一定要小心而细致。
+7. 在提交程序至hadoop平台运行之前，若输入的命令中把要处理的文档写错了（比如child-parent.txt写成grades.txt）则会导致输出的文档大小为0B，因此在输入命令时一定要小心而细致。
 
 ## 五、心得体会
 
