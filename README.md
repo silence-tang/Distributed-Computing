@@ -1,1 +1,1 @@
-  These are some experiments of Distributed Computing course of XDUCS.
+西电计科分布式计算课程上机作业。
